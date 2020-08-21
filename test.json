@@ -1,0 +1,311 @@
+{
+	"info": {
+		"_postman_id": "9aa18ba5-b768-48c4-96b4-a3606ba90366",
+		"name": "Spotiy API CRUD",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Total Palylist ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "65fb867d-19af-43bf-91e5-4e6b2571f3fc",
+						"exec": [
+							"responsedata = JSON.parse(responseBody)\r",
+							"value = responsedata.items[3].id\r",
+							"console.log(value)\r",
+							"\r",
+							"pm.environment.set(\"PlaylistIDBefore\", value);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}users/{{userid}}/playlists",
+					"host": [
+						"{{URL}}users"
+					],
+					"path": [
+						"{{userid}}",
+						"playlists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Total Tracks in Playlist Before Adding PL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "39700caf-e5c9-4f81-bc20-d5755e63b769",
+						"exec": [
+							"responsedata = JSON.parse(responseBody)\r",
+							"value = responsedata.items[0].track.uri\r",
+							"console.log(value)\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  var res = value.split(\":\");\r",
+							"  console.log(res[2])\r",
+							"  pm.environment.set(\"trackid\", res[2]);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}playlists/{{PlaylistIDBefore}}/tracks",
+					"host": [
+						"{{URL}}playlists"
+					],
+					"path": [
+						"{{PlaylistIDBefore}}",
+						"tracks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create PlayList",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e42bf18e-06c0-4d6a-ad42-1002a188caba",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.name).to.eql(\"Bollywood\");\r",
+							"});\r",
+							"\r",
+							"responsedata = JSON.parse(responseBody)\r",
+							"value = responsedata.id\r",
+							"console.log(value)\r",
+							"\r",
+							"pm.environment.set(\"PlaylistID\", value);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"{{Playlistname}}\",\"description\":\"New playlist description\",\"public\":false}"
+				},
+				"url": {
+					"raw": "{{URL}}users/{{userid}}/playlists",
+					"host": [
+						"{{URL}}users"
+					],
+					"path": [
+						"{{userid}}",
+						"playlists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Items in PlayList",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}playlists/{{PlaylistID}}/tracks?uris=spotify%3Atrack%3A{{trackid}}",
+					"host": [
+						"{{URL}}playlists"
+					],
+					"path": [
+						"{{PlaylistID}}",
+						"tracks"
+					],
+					"query": [
+						{
+							"key": "uris",
+							"value": "spotify%3Atrack%3A{{trackid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Total Tracks in Playlist",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}playlists/{{PlaylistID}}/tracks",
+					"host": [
+						"{{URL}}playlists"
+					],
+					"path": [
+						"{{PlaylistID}}",
+						"tracks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Tracks from Palylist",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"tracks\":[{\"uri\":\"spotify:track:{{trackid}}\",\"positions\":[0]}]}"
+				},
+				"url": {
+					"raw": "{{URL}}playlists/{{PlaylistID}}/tracks",
+					"host": [
+						"{{URL}}playlists"
+					],
+					"path": [
+						"{{PlaylistID}}",
+						"tracks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://api.spotify.com/v1/playlists/{{PlaylistID}}",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"Bollywood DJ\",\"description\":\"Updated playlist description\",\"public\":false}"
+				},
+				"url": {
+					"raw": "https://api.spotify.com/v1/playlists/{{PlaylistID}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"spotify",
+						"com"
+					],
+					"path": [
+						"v1",
+						"playlists",
+						"{{PlaylistID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

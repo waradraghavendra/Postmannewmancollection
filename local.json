@@ -1,0 +1,39 @@
+{
+	"id": "99c8e8b2-ad41-4e38-aa5c-82d083987316",
+	"name": "Spotify data",
+	"values": [
+		{
+			"key": "Playlistname",
+			"value": "Bollywood",
+			"enabled": true
+		},
+		{
+			"key": "PlaylistID",
+			"value": "",
+			"enabled": true
+		},
+		{
+			"key": "userid",
+			"value": "wwkyc3pq0k2box3gyjdgvg1xy",
+			"enabled": true
+		},
+		{
+			"key": "token",
+			"value": "dsfghjk",
+			"enabled": true
+		},
+		{
+			"key": "PlaylistIDBefore",
+			"value": "",
+			"enabled": true
+		},
+		{
+			"key": "trackid",
+			"value": "",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2020-08-20T17:15:14.831Z",
+	"_postman_exported_using": "Postman/7.30.1"
+}
